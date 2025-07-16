@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weather App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="card">
+    <!-- Loader -->
+    <div class="loader" id="loader"></div>
+
+    <!-- Search Section -->
+    <div class="search">
+      <input type="text" placeholder="Enter City, State" spellcheck="false" id="searchBox" />
+      <button id="locationBtn" title="Use My Location" aria-label="Use My Location">📍</button>
+      <button id="searchBtn"><img src="images/search.png" alt="Search" /></button>
+    </div>
+
+    <!-- Suggestions Dropdown -->
+    <div class="suggestions" style="display:none; background:#333; color:#fff; max-width:470px; margin:10px auto; border-radius:10px; padding:10px;"></div>
+
+    <!-- Error Message -->
+    <div class="error">
+      <p>City Not Found</p>
+    </div>
+
+    <!-- Weather Display Section -->
+    <div class="weather">
+      <div class="weather-icon-container">
+        <img src="images/rain.png" class="weather-icon" />
+        <span class="condition-name">Rain</span>
+      </div>
+      <h1 class="temp">22°F</h1>
+      <p class="feels-like">Feels Like: 20°F</p>
+      <h2 class="city">New York</h2>
+
+      <!-- Weather Details -->
+      <div class="details">
+        <div class="col">
+          <img src="images/humidity.png" />
+          <div>
+            <p class="humidity">50%</p>
+            <p>Humidity</p>
+          </div>
+        </div>
+        <div class="col">
+          <img src="images/wind.png" />
+          <div>
+            <p class="wind">15 mp/h</p>
+            <p>Wind Speed</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Forecast Section -->
+      <div class="forecast-container" style="display: none;">
+        <h3>5-Day Forecast</h3>
+        <div class="forecast-grid"></div>
+      </div>
+
+      <!-- Unit Toggle Button -->
+      <div class="toggle">
+        <button class="toggle-btn">Switch to Metric</button>
+      </div>
+    </div>
+    <!-- JavaScript -->
+    <script src="index.js"></script>
+  </div>
+</body>
+</html>
