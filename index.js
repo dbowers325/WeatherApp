@@ -101,8 +101,8 @@ async function get5DayForecast(lat, lon, unit) {
     const response = await fetch(`/.netlify/functions/get-forecast?lat=${lat}&lon=${lon}&units=${unit}`);
     const data = await response.json();
 
+    const forecastContainer = document.getElementById("forecastContainer");
     forecastContainer.innerHTML = ""; // Clear previous forecast
-    document.querySelector(".forecast-container").style.display = "block";
 
     const dailyForecasts = data.list.filter(item => item.dt_txt.includes("12:00:00"));
 
@@ -122,6 +122,9 @@ async function get5DayForecast(lat, lon, unit) {
       `;
       forecastContainer.appendChild(card);
     });
+
+    document.querySelector('.forecast-container').style.display = 'block';
+
   } catch (error) {
     console.error("Error fetching 5-day forecast:", error);
     forecastContainer.innerHTML = "<p>Unable to load forecast.</p>";
