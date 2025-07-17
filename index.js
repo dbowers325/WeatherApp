@@ -12,7 +12,7 @@ const locationBtn = document.getElementById("locationBtn");
 const weatherIcon = document.querySelector(".weather-icon");
 const toggleBtn = document.querySelector(".toggle-btn");
 const suggestionsContainer = document.querySelector(".suggestions");
-const forecastContainer = document.getElementById("forecast-container");
+const forecastContainer = document.getElementById("forecastContainer");
 
 // ==== Fetch Current Weather by City ====
 async function checkWeather(city, unit) {
