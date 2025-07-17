@@ -13,7 +13,7 @@ const weatherIcon = document.querySelector(".weather-icon");
 const toggleBtn = document.querySelector(".toggle-btn");
 const suggestionsContainer = document.querySelector(".suggestions");
 
-// ==== Fetch Current Weather by City via Netlify Function ====
+// ==== Fetch Current Weather by City ====
 async function checkWeather(city, unit) {
   if (!city) return;
   lastSearchedCity = city;
@@ -36,7 +36,7 @@ async function checkWeather(city, unit) {
   }
 }
 
-// ==== Fetch Weather by Coordinates via Netlify Function ====
+// ==== Fetch Weather by Coordinates ====
 async function checkWeatherByCoords(lat, lon, unit, displayName) {
   lastLat = lat;
   lastLon = lon;
@@ -97,35 +97,50 @@ function showError(message) {
 // ==== 5-Day Forecast ====
 async function get5DayForecast(lat, lon, unit) {
   try {
-    const response = await fetch(`/.netlify/functions/get-weather?lat=${lat}&lon=${lon}&units=${unit}`);
+    const response = await fetch(`/.netlify/functions/get-forecast?lat=${lat}&lon=${lon}&units=${unit}`);
     const data = await response.json();
 
-    // NOTE: OpenWeather 5-day forecast is a different endpoint
-    // If you want to add 5-day forecast, create a separate Netlify function for forecast API
+    forecastContainer.innerHTML = ""; // Clear previous forecast
 
-    // For now, this just calls current weather again (replace with forecast function later)
+    const dailyForecasts = data.list.filter(item => item.dt_txt.includes("12:00:00"));
+
+    dailyForecasts.forEach(forecast => {
+      const date = new Date(forecast.dt_txt).toDateString();
+      const temp = Math.round(forecast.main.temp);
+      const icon = forecast.weather[0].icon;
+      const description = forecast.weather[0].description;
+
+      const card = document.createElement("div");
+      card.className = "forecast-card";
+      card.innerHTML = `
+        <h4>${date}</h4>
+        <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}">
+        <p>${temp}°${unit === "imperial" ? "F" : "C"}</p>
+        <p>${description}</p>
+      `;
+      forecastContainer.appendChild(card);
+    });
   } catch (error) {
     console.error("Error fetching 5-day forecast:", error);
+    forecastContainer.innerHTML = "<p>Unable to load forecast.</p>";
   }
 }
 
-// ==== Show Suggestions (via Netlify function) ====
+// ==== Show Suggestions ====
 function showSuggestionList(suggestions) {
   suggestionsContainer.innerHTML = "";
   suggestions.forEach(loc => {
     const name = `${loc.name}${loc.state ? ", " + loc.state : ""}, ${loc.country}`;
     const item = document.createElement("div");
     item.textContent = name;
-    Object.assign(item.style, {
-      padding: "8px",
-      cursor: "pointer",
-      borderBottom: "1px solid #555"
-    });
+    item.classList.add("suggestion-item"); //
+
     item.addEventListener("click", () => {
       suggestionsContainer.style.display = "none";
       searchBox.value = name;
       checkWeatherByCoords(loc.lat, loc.lon, currentUnit, name);
     });
+
     suggestionsContainer.appendChild(item);
   });
   suggestionsContainer.style.display = "block";
