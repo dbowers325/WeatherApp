@@ -102,6 +102,7 @@ async function get5DayForecast(lat, lon, unit) {
     const data = await response.json();
 
     forecastContainer.innerHTML = ""; // Clear previous forecast
+    document.querySelector(".forecast-container").style.display = "block";
 
     const dailyForecasts = data.list.filter(item => item.dt_txt.includes("12:00:00"));
 
@@ -112,7 +113,7 @@ async function get5DayForecast(lat, lon, unit) {
       const description = forecast.weather[0].description;
 
       const card = document.createElement("div");
-      card.className = "forecast-card";
+      card.className = "forecast-day";
       card.innerHTML = `
         <h4>${date}</h4>
         <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}">
